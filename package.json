@@ -4,6 +4,13 @@
   "repository": "https://github.com/atvue/bui.git",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "scripts": {
+    "build": "babel src --copy-files --out-dir lib --ignore 'src/**/*.spec.js','src/**/*.test.js'"
+  },
   "author": "毛庭峰 <mtingfeng@gmail>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.1.0",
+    "@babel/core": "^7.1.0"
+  }
 }

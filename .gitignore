@@ -3,3 +3,6 @@
 
 
 yarn-error.log
+
+# 打包后的es5文件夹
+/lib
