@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "scripts": {
-    "build": "babel src --copy-files --out-dir lib --ignore 'src/**/*.spec.js','src/**/*.test.js' --watch"
+    "build": "babel src --out-dir lib --ignore 'src/**/*.spec.js','src/**/*.test.js'",
+    "compile-vue": "node scripts/compile-vue"
   },
   "author": "毛庭峰 <mtingfeng@gmail>",
   "license": "MIT",
@@ -16,5 +17,9 @@
   },
   "peerDependencies": {
     "vue": "^2.5.17"
+  },
+  "dependencies": {
+    "glob": "^7.1.3",
+    "vue-template-compiler": "^2.5.17"
   }
 }

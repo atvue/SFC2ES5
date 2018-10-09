@@ -1,4 +1,4 @@
-import Alert from './alert.vue'
+import Alert from './alert'
 
 
 
