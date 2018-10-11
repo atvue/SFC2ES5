@@ -8,6 +8,7 @@ const config = require( './config' ) ,
 const glob = require("glob")
 const compiler = require('vue-template-compiler')
 const babel = require("@babel/core")
+const babelPluginInsertVueTemplate = require( './babel-plugin-insert-vue-template' )
 
 
 // 查找所有vue文件
@@ -32,8 +33,19 @@ async function init(){
             result = compiler.compile( templateTxt ) ,
             { render } = result
         // console.log( scriptTxt )
-        let { ast } = babel.transformSync( scriptTxt , { ast: true , code: false } ) ,
-            { code } = babel.transformFromAstSync( ast )
+        let { ast } = babel.transformSync( scriptTxt , { 
+                ast: true ,
+                code: false ,
+                sourceType: 'module' ,
+                plugins: [
+                    [ '@babel/plugin-transform-modules-commonjs' , {
+                        strictMode: false ,
+                    } ] ,
+                    [ babelPluginInsertVueTemplate , { renderTxt: render } ] ,
+                ]
+            } )
+
+        let { code } = babel.transformFromAstSync( ast )
         console.log( code )
     } )
 
