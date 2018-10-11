@@ -10,7 +10,7 @@ const glob = require("glob")
 const excludeReg = /\/__test__|.*\.test\.js/
 
 // 查找所有js文件,排除__test__文件
-async function findVueFiles(){
+async function findJSFiles(){
     let files = await new Promise( (r,j) => {
         glob( `${srcDir}/**/*.js` , function ( er , files ) {
             if ( er ) {
@@ -34,7 +34,12 @@ const options = {
 }
 
 async function init(){
-    const files = await findVueFiles()
+    let files
+    try{
+        files = await findJSFiles()
+    }catch( e ) {
+        throw e
+    }
     files.forEach( file => {
         let code = readFileSync( file )
         babel.transform( code , options , function( err , result ) {
