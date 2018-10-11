@@ -42,12 +42,8 @@ async function init(){
     }
     files.forEach( file => {
         let code = readFileSync( file )
-        babel.transform( code , options , function( err , result ) {
-            if ( err ) {
-                throw err
-            }
-            let { code } = result ,
-                libFile = toLibPath( file )
+        babel.transformAsync( code , options ).then( ( { code } ) => {
+            let libFile = toLibPath( file )
             writeFile( libFile , code )
         } )
     } )
