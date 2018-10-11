@@ -1,15 +1,17 @@
 const config = require( './config' ) ,
-    { srcDir } = config ,
-    { readFileSync } = require( './util' ) ,
-    { extractScript , extractTemplate } = require( './vueMiniLoader' )
-
-
+    { srcDir , libDir } = config ,
+    path = require( 'path' ) ,
+    { readFileSync , writeFile } = require( './util' ) ,
+    parseVueFile = require( './parseVueFile' ) ,
+    fse = require('fs-extra')
 
 const glob = require("glob")
-const compiler = require('vue-template-compiler')
-const babel = require("@babel/core")
-const babelPluginInsertVueTemplate = require( './babel-plugin-insert-vue-template' )
 
+function toLibPath( srcPath ){
+    let remainPath = srcPath.replace( `${srcDir}/` , ''  ) ,
+        libFilePath = path.join( libDir , remainPath )
+    return libFilePath
+}
 
 // 查找所有vue文件
 async function findVueFiles(){
@@ -25,30 +27,14 @@ async function findVueFiles(){
 }
 
 async function init(){
+    await fse.remove( libDir )
     let files = await findVueFiles()
     files.forEach( filePath => {
-        let content = readFileSync( filePath ) ,
-            scriptTxt = extractScript( content ) ,
-            templateTxt = extractTemplate( content ) ,
-            result = compiler.compile( templateTxt ) ,
-            { render } = result
-        // console.log( scriptTxt )
-        let { ast } = babel.transformSync( scriptTxt , { 
-                ast: true ,
-                code: false ,
-                sourceType: 'module' ,
-                plugins: [
-                    [ '@babel/plugin-transform-modules-commonjs' , {
-                        strictMode: false ,
-                    } ] ,
-                    [ babelPluginInsertVueTemplate , { renderTxt: render } ] ,
-                ]
-            } )
-
-        let { code } = babel.transformFromAstSync( ast )
-        console.log( code )
+        let mirrorLibPath = toLibPath( filePath ) ,
+            content = readFileSync( filePath ) ,
+            code = parseVueFile( content )
+        writeFile( mirrorLibPath , code )
     } )
-
 }
 
 
