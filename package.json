@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "scripts": {
-    "build": "babel src --out-dir lib --ignore 'src/**/*.spec.js','src/**/*.test.js'",
+    "build": "node scripts/build-lib",
+    "compile-js": "node scripts/compile-js" ,
     "compile-vue": "node scripts/compile-vue"
   },
   "author": "毛庭峰 <mtingfeng@gmail>",

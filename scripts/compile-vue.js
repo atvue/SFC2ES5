@@ -1,17 +1,9 @@
 const config = require( './config' ) ,
-    { srcDir , libDir } = config ,
-    path = require( 'path' ) ,
+    { srcDir , toLibPath } = config ,
     { readFileSync , writeFile } = require( './util' ) ,
-    parseVueFile = require( './parseVueFile' ) ,
-    fse = require('fs-extra')
+    parseVueFile = require( './parseVueFile' )
 
 const glob = require("glob")
-
-function toLibPath( srcPath ){
-    let remainPath = srcPath.replace( `${srcDir}/` , ''  ) ,
-        libFilePath = path.join( libDir , remainPath )
-    return libFilePath
-}
 
 // 查找所有vue文件
 async function findVueFiles(){
@@ -27,7 +19,6 @@ async function findVueFiles(){
 }
 
 async function init(){
-    await fse.remove( libDir )
     let files = await findVueFiles()
     files.forEach( filePath => {
         let mirrorLibPath = toLibPath( filePath ) ,
@@ -38,6 +29,4 @@ async function init(){
 }
 
 
-
-
-init()
+exports.compileVue = init
