@@ -1,6 +1,6 @@
 const config = require( './config' ) ,
     { srcDir , toLibPath } = config ,
-    { readFileSync , writeFile } = require( './util' ) ,
+    { readFileSync , readFile , writeFile } = require( './util' ) ,
     parseVueFile = require( './parseVueFile' )
 
 const glob = require("glob")
@@ -19,12 +19,22 @@ async function findVueFiles(){
 }
 
 async function init(){
-    let files = await findVueFiles()
+    let files
+    try{
+        files = await findVueFiles()
+    }catch( e ) {
+        throw e
+    }
     files.forEach( filePath => {
-        let mirrorLibPath = toLibPath( filePath ) ,
-            content = readFileSync( filePath ) ,
-            code = parseVueFile( content )
-        writeFile( mirrorLibPath , code )
+        let mirrorLibPath = toLibPath( filePath )
+        readFile( filePath , async content => {
+            try{
+                let code = await parseVueFile( content )
+                writeFile( mirrorLibPath , code )
+            }catch( e ){
+                throw e
+            }
+        } )
     } )
 }
 

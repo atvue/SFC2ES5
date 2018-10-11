@@ -1,9 +1,18 @@
 const fs = require( 'fs' ) ,
-    path = require( 'path' ) ,
     fse = require( 'fs-extra' )
 
 
-
+exports.readFile = function( file , callback ) {
+    if ( file === undefined || file === null ) {
+        throw '请输入文件路径'
+    }
+    fs.readFile( file , 'utf8' , ( err , data ) => {
+        if ( err ) {
+            throw err
+        }
+        callback( data )
+    } )
+}
 
 exports.readFileSync = function( file ) {
     if ( file === undefined || file === null ) {
