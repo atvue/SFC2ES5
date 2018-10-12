@@ -22,7 +22,7 @@ module.exports = function( content ) {
                     [ '@babel/plugin-transform-modules-commonjs' , {
                         strictMode: false ,
                     } ] ,
-                    [ babelPluginInsertVueTemplate , { renderTxt: render } ] ,
+                    [ babelPluginInsertVueTemplate , { renderBody: render } ] ,
                 ]
             }
         if ( errors.length > 0 ) {
