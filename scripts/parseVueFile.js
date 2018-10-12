@@ -1,4 +1,3 @@
-const { extractScript , extractTemplate } = require( './vueMiniLoader' )
 const compiler = require('vue-template-compiler')
 const babel = require("@babel/core")
 const babelPluginInsertVueTemplate = require( './babel-plugin-insert-vue-template' )
@@ -9,8 +8,10 @@ module.exports = function( content ) {
         if ( content === '' || content === null || content.trim() === '' ) {
             reject( new Error( 'parseVueFile 请填入需要转换的vue格式文件' ) )
         }
-        let scriptTxt = extractScript( content ) ,
-            templateTxt = extractTemplate( content ) ,
+        let vueDescriptor = compiler.parseComponent( content ) , // , { pad: 'line' }
+            { template , script } = vueDescriptor ,
+            scriptTxt = script.content ,
+            templateTxt = template.content ,
             result = compiler.compile( templateTxt ) ,
             { render } = result ,
             optoins = { 
