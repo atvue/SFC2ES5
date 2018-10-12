@@ -6,14 +6,14 @@ const babelPluginInsertVueTemplate = require( './babel-plugin-insert-vue-templat
 module.exports = function( content ) {
     return new Promise( ( resolve , reject ) => {
         if ( content === '' || content === null || content.trim() === '' ) {
-            reject( new Error( 'parseVueFile 请填入需要转换的vue格式文件' ) )
+            throw 'parseVueFile 请填入需要转换vue的SFC文件内容'
         }
         let vueDescriptor = compiler.parseComponent( content ) , // , { pad: 'line' }
             { template , script } = vueDescriptor ,
             scriptTxt = script.content ,
             templateTxt = template.content ,
             result = compiler.compile( templateTxt ) ,
-            { render } = result ,
+            { render , errors } = result ,
             optoins = { 
                 ast: true ,
                 code: false ,
@@ -25,6 +25,9 @@ module.exports = function( content ) {
                     [ babelPluginInsertVueTemplate , { renderTxt: render } ] ,
                 ]
             }
+        if ( errors.length > 0 ) {
+            throw `编译vue的template文件出错，${errors}`
+        }
         babel.transformAsync( scriptTxt , optoins ).then( ( { ast } ) => {
             babel.transformFromAstAsync( ast ).then( ( { code } ) => {
                 resolve( code )

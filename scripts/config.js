@@ -14,10 +14,15 @@ function toLibPath( srcPath ){
         libFilePath = path.join( libDir , remainPath )
     return libFilePath
 }
+function toShortPath( srcPath ){
+    let remainPath = srcPath.replace( `${root}/` , ''  )
+    return remainPath
+}
 
 module.exports = {
     root ,
     srcDir ,
     libDir ,
     toLibPath ,
+    toShortPath ,
 }

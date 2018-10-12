@@ -1,6 +1,6 @@
 const config = require( './config' ) ,
-    { srcDir , toLibPath } = config ,
-    { readFileSync , readFile , writeFile } = require( './util' ) ,
+    { srcDir , toLibPath , toShortPath } = config ,
+    { readFile , writeFile } = require( './util' ) ,
     parseVueFile = require( './parseVueFile' )
 
 const glob = require("glob")
@@ -28,11 +28,18 @@ async function init(){
     files.forEach( filePath => {
         let mirrorLibPath = toLibPath( filePath )
         readFile( filePath , async content => {
+            let code
             try{
-                let code = await parseVueFile( content )
-                writeFile( mirrorLibPath , code )
+                code = await parseVueFile( content )
             }catch( e ){
-                throw e
+                let short = toShortPath( filePath )
+                    error = `文件：${short}，消息：${e}，(此文件的转译lib文件将会被跳过)`
+                console.warn( error )
+                // 有错误,返回
+                return
+            }
+            if ( code !== undefined ) {
+                writeFile( mirrorLibPath , code )
             }
         } )
     } )
