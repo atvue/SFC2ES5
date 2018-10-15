@@ -1,8 +1,9 @@
 ## 目前仅支持转译vue中的script和template部分，忽略style标签 
 
 一个转译例子🌰
-`src/alert.vue`
 
+
+`src/alert.vue`
 ```vue
 <template>
     <div>
