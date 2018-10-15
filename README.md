@@ -1,5 +1,6 @@
-# bui
+## 目前仅支持转译vue中的script和template部分，忽略style标签 
 
+一个转译例子🌰
 `src/alert.vue`
 
 ```vue
@@ -55,6 +56,11 @@ exports.default = Object.assign(_default, {
 });;
 ```
 
+### 开发
+- `cd SFC2ES5`
+- 安装依赖：`yarn`
+- 转译`src/`目录下的所有vue文件: `yarn build`
+> js部分会直接通过babel转译，会跳过__test__目录下的测试文件，或者后缀是*.test.js文件；所有lib下的文件的目录结构和src目录结构保持一致
 
 
 ### 细节
