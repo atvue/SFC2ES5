@@ -17,9 +17,7 @@ module.exports = function( babel ) {
                             { renderBody } = opts
                         const renderAst = template.ast ( `
                             Object.assign( ${ name } , { 
-                                render: function render(){ 
-                                    ${ renderBody }
-                                }
+                                render: ${ renderBody } ,
                             } )
                         ` , {
                             sourceType: 'script'    // disable strict mode

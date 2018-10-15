@@ -1,26 +1,17 @@
 <template>
     <div>
-        alert,{{name}}
-        <test name="maotingfeng">
-            哈哈哈哈
-        </test>
+        this is a SFC component , {{name}}
     </div>
 </template>
 
 
 <script>
-import { abc } from './util.js'
-import test from './test'
-abc()
 
 export default {
     name: 'alert'  ,
-    components: {
-        test
-    } ,
     data(){
         return {
-            name: "毛庭峰"
+            name: "hello,SFC!"
         }
     }
 }
