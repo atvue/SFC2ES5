@@ -63,6 +63,55 @@ exports.default = Object.assign(_default, {
 - 转译`src/`目录下的所有vue文件: `yarn build`
 > js部分会直接通过babel转译，会跳过__test__目录下的测试文件，或者后缀是*.test.js文件；所有lib下的文件的目录结构和src目录结构保持一致
 
+#### 其他库引用SFC2ES5项目
+
+- 在`SFC2ES5`仓库中执行：`yarn link`
+- 新建项目`testProject`: `mkdir testProject`
+- 在`testProject`中执行：`yarn link sfc2es5` ( `SFC2ES5`中的`package.json`，`name`字段决定 )
+
+`testProject/src/**/*.vue`文件中：
+
+```vue
+<template>
+    <div>
+        App
+        <Alert />
+    </div>
+</template>
+
+<script>
+// 直接导入
+import { Alert } from 'sfc2es5'
+
+export default {
+    name: 'App' ,
+    components: {
+        Alert
+    }
+}
+</script>
+```
+
+⚠️`webpack.config.js`配置需要
+
+```javascript
+{
+    module: {
+      rules: [
+        {
+          test: /\.vue$/,
+          // 必须
+          // 阻止vue-loader去解析SFC2ES5仓库中的vue文件，一般都会配置：/node_modules|SFC2ES5/
+          exclude: /SFC2ES5/ ,
+          loader: 'vue-loader'
+        }
+      ]
+    },
+    resolve: {
+      extensions: [ '.vue' , '.js' ] , // 必须
+    }
+}
+```
 
 ### 细节
 
