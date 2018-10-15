@@ -19,9 +19,7 @@ module.exports = function( babel ) {
                             Object.assign( ${ name } , { 
                                 render: ${ renderBody } ,
                             } )
-                        ` , {
-                            sourceType: 'script'    // disable strict mode
-                        } )
+                        ` )
                         path.node.right = renderAst
                     }
                 }
