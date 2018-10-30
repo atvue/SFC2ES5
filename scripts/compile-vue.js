@@ -1,7 +1,9 @@
 const config = require( './config' ) ,
+    path = require( 'path' ) ,
     { srcDir , toLibPath , toShortPath } = config ,
     { readFile , writeFile } = require( './util' ) ,
-    parseVueFile = require( './parseVueFile' )
+    parseVueFile = require( './parseVueFile' ) ,
+    chalk = require( 'chalk' )
 
 const glob = require("glob")
 
@@ -32,9 +34,12 @@ async function init(){
             try{
                 code = await parseVueFile( content )
             }catch( e ){
-                let short = toShortPath( filePath )
-                    error = `文件：${short}，消息：${e}，(此文件的转译lib文件将会被跳过)`
-                console.warn( error )
+                let short = toShortPath( filePath ) ,
+                    { base } = path.parse( filePath )
+                    error = `错误❌:文件：${short}，消息：${e}(转译lib目录中，将不会生成${base})`
+                console.log(
+                    chalk.red( error )
+                )
                 // 有错误,返回
                 return
             }
