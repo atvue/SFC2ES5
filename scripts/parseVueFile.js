@@ -16,7 +16,7 @@ module.exports = function(content) {
         let vueDescriptor = compiler.parseComponent(content), // , { pad: 'line' }
             { template, script } = vueDescriptor,
             scriptTxt = script ? script.content : NullSFCScriptExport ,
-            templateTxt = template.content,
+            templateTxt = template ? template.content : '' ,
             result = compiler.compile(templateTxt),
             { render, errors } = result;
 
