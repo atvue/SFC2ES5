@@ -3,7 +3,7 @@ var transpile = require('vue-template-es2015-compiler');
 
 const babel = require('@babel/core');
 const babelPluginInsertVueTemplate = require('./babel-plugin-insert-vue-template');
-
+const NullSFCScriptExport = 'export default {}'
 function toFunction(code) {
     return transpile('function render () {' + code + '}');
 }
@@ -15,7 +15,7 @@ module.exports = function(content) {
         }
         let vueDescriptor = compiler.parseComponent(content), // , { pad: 'line' }
             { template, script } = vueDescriptor,
-            scriptTxt = script.content,
+            scriptTxt = script ? script.content : NullSFCScriptExport ,
             templateTxt = template.content,
             result = compiler.compile(templateTxt),
             { render, errors } = result;
