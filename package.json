@@ -5,9 +5,7 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "scripts": {
-    "build": "node scripts/build-lib",
-    "compile-js": "node scripts/compile-js",
-    "compile-vue": "node scripts/compile-vue"
+    "build": "node scripts/build-lib"
   },
   "author": "毛庭峰 <mtingfeng@gmail>",
   "license": "MIT",
